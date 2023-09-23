@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <style>
+        .message-container {
+            margin-bottom: 10px;
+        }
+
+        .user-message {
+            color: blue;
+        }
+
+        .chatbot-message {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="chat">
+        {% for message in chat_history %}
+            <div class="message-container">
+                {% if message.user == 'You' %}
+                    <p class="user-message"><strong>You:</strong> {{ message.message }}</p>
+                {% else %}
+                    <p class="chatbot-message"><strong>Chatbot:</strong> {{ message.message }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <form id="chat-form" method="post">
+        {% csrf_token %}
+        <input type="text" id="message-input" name="query">
+        <button type="submit">Send</button>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Scroll to the bottom of the chat
+            $('#chat').scrollTop($('#chat')[0].scrollHeight);
+
+            $('#chat-form').submit(function(event) {
+                event.preventDefault();
+                var message = $('#message-input').val().trim();
+                if (message) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "ask_bot" %}',
+                        data: { query: message },
+                        success: function(response) {
+                            $('#chat').append('<div class="message-container"><p class="user-message"><strong>You:</strong> ' + message + '</p></div>');
+                            $('#chat').append('<div class="message-container"><p class="chatbot-message"><strong>Chatbot:</strong> ' + response.response + '</p></div>');
+                            $('#message-input').val('');
+                            // Scroll to the bottom of the chat
+                            $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

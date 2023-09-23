@@ -1,0 +1,32 @@
+
+{% extends '../base.html' %}
+{%block titleblock%}Messages | Creative Poultry{%endblock%}
+{%block bodyblock%}
+
+<div class="container-fluid px-0 mt-2 mx-0 homediv " >
+ <div class="container col-lg-9 ">
+  <div class="p-4 border">
+    <h3 class="text-center">All Messages</h3><hr>
+    {% for message in messages %}
+    <div class="bg-light p-3 mb-2 d-flex justify-content-around">
+       {% if request.user == message.sender%}
+       <h5>{{message.receiver}} </h5>
+       {%else%}
+       <h5>{{message.sender}} </h5>
+
+       {%endif%}
+        <p>{{message.product.name}}</p>
+        <p>{{message.created_at}}</p>
+        <a type="button" href="{% url 'messaging:message-room' message.id%}" class="btn btn-sm btn-primary"> See Details</a>
+
+    </div>
+    {%empty%}
+    <p class="p-5 text-center">No messages yet.</p>
+    {% endfor %}
+
+
+   
+  </div>
+ </div>
+</div> 
+{%endblock%}

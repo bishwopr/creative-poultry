@@ -1,0 +1,69 @@
+{% extends '../base.html' %}
+{% load static %}
+{%block titleblock%}Home | Creative Poultry{%endblock%}
+{%block bodyblock%}
+<style>
+   .rating{
+      color: #ffd900;
+   }
+
+   .btn-basket {
+  background-color: #ffd800;
+  color: #2e2e2e;
+}
+
+   .product:hover{
+      cursor: pointer;
+      transition: 0.7s;
+   }
+   .product:hover  .productdesc{
+      background-color: #ffd900be;
+      transition: 0.7s;
+   }
+ 
+   .product:hover  .btn-basket{
+      background-color: #ffffff;
+      color: #2e2e2e;
+      transition: 0.7s;
+   }
+   
+   .product:hover .rating{
+      color: #272727;
+      transition: 0.7s;
+   }
+
+</style>
+
+<div class="container-fluid px-0 mt-2 mx-0 homediv " >
+ <div class="container col-lg-9 ">
+  <div class="row">
+   {%for i in object_list %}
+   <div class="col-lg-3 col-md-3  mb-2 p-2  product">
+      <a class="text-decoration-none text-dark" href="{%url 'product:detail' pk=i.id %}">
+
+     
+     <div>
+      <img class="rounded-top" style="height: 200px ; width: 100%;" src="{{i.image.url}}" alt="image">
+     </div>
+      <div class=" mt-2 p-2 border productdesc text-center">
+         <h5>{{i.name}}</h5>
+         <h6><strike class="text-secondary">${{i.mprice}}</strike> &nbsp; ${{i.price}}</h6>
+        
+        <div class="mt-2 d-flex justify-content-center">
+         <a href="{% url 'cart:add' pk=i.id %}" class="btn btn-basket">Add to Cart &nbsp; <i class="fs-5 fa-solid fa-bag-shopping" title="cart"></i></a>
+        </div>
+
+      </div>
+   </a>
+   </div>
+   {%empty%}
+   <p class="text-center p-4 m-5 fs-4">No products yet.</p>
+   {%endfor%}
+  
+  </div>
+ </div>
+</div> 
+
+
+
+{%endblock%}

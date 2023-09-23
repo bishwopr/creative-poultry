@@ -1,0 +1,65 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid mt-3">
+      <a style="margin-top: -40px;" class=" text-decoration-none logo" href="{%url 'business:profile' %}">
+        <img height="90" src="{% static 'images/logo2.png'%}" alt="logo">
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+       
+
+       
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          
+          <li class="nav-item me-3">
+            <a class="nav-link " href="{%url 'business:profile'%}">Your Products</a>
+          </li>
+          <li class="nav-item me-3">
+            <a class="nav-link " href="{%url 'product:addproduct' %}">Add Product</a>
+          </li>
+          
+        </ul>
+          
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+          <li class="nav-item me-3">
+            <a class="nav-link {{homepage}}" aria-current="page" href="{% url 'messaging:view_messages' %}"
+              >Messages</a
+            >
+          </li>
+          <li class="nav-item me-3">
+            <a class="nav-link {{homepage}}" aria-current="page" href="{% url 'order:business-orders' %}"
+              >Orders</a
+            >
+          </li>
+          <li class="nav-item dropdown me-2">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-regular fa-user"></i> {{user.username}}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="{% url 'business:info-update'%}">Update Profile</a></li>
+              <li><a class="dropdown-item" href="#">Reset Password</a></li>
+              <li><a  class="dropdown-item" href="{% url 'messaging:view_messages' %}">View Messages</a></li>
+              <li><a  class="dropdown-item" href="{% url 'business:sales_chart' %}">Sales Chart</a></li>
+              <li><a class="dropdown-item" href="{% url 'account:logout'%}">Logout</a></li>
+             
+
+            </ul>
+          </li>
+
+          </ul>
+      
+
+      </div>
+    </div>
+  </nav>

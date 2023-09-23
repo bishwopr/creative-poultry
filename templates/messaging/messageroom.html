@@ -1,0 +1,114 @@
+<!-- cart/checkout.html -->
+
+{% extends 'base.html' %}
+
+{% block titleblock %}
+  Message | Creative Poultry
+{% endblock %}
+
+{% block bodyblock %}
+<style>
+    .message {
+        overflow-y: auto;
+        max-height: 300px;
+        padding: 10px;
+    }
+
+    .incoming {
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+    .outgoing {
+        text-align: right;
+        margin-bottom: 10px;
+    }
+
+    .imessage-text {
+        display: inline-block;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #f2f2f2;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .omessage-text {
+        display: inline-block;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #ffd90086;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+
+
+<div class="container-fluid px-0 mt-2 mx-0 homediv " >
+    <div class="container col-lg-9 ">
+        <h4 class="text-center">Creative Messaging</h4>
+        {% if message_room.sender.email == request.user.email %}
+        <div class="my-2 text-center">
+           <h5>Messaging to: {{message_room.receiver}}</h5>
+           <h6>Product: <a href="{%url 'product:detail' pk=message_room.product.id %}">{{message_room.product.name}}</a></h6>
+        </div>
+        
+
+
+
+        {% elif message_room.receiver == request.user %}
+        <div class="my-2 text-center">
+            <h5>Messages From: {{message_room.sender}}</h5>
+            <h6>Product: <a href="{%url 'product:detail' pk=message_room.product.id %}">{{message_room.product.name}}</a></h6>
+         </div>
+        
+        {%endif%}
+        <hr>
+            <div>
+               
+                <div class="p-4"  style="height: 50vh;">
+                    <div class="message" id="mbox">
+                        {% for i in message_room.messages%}
+                        {%if i.sender == request.user %}
+                        <div class="outgoing">
+                            <div class="omessage-text">
+                               {{i.content}}
+                            </div>
+                        </div>
+                        {%else%}
+                        <div class="incoming">
+                            <div class="imessage-text">
+                                {{i.content}}
+                            </div>
+                        </div>
+                        {%endif%}
+                        
+                        {%empty%}
+                        <p class="p-5 text-center">No messages yet.</p>
+                        {%endfor%}
+                       
+                       
+                    </div>
+                </div>
+                <hr>
+                <div >
+                <form action="{% url 'messaging:send_messages'%}" method="post" class="d-flex">
+                    {% csrf_token %}
+                    <input type="text" name="roomid" value="{{message_room.id}}" hidden>
+                    <button onclick="location.reload(); " class="btn btn-sm btn-outline-success me-2">&#x21bb;</button>
+                    <input type="text" name="message" class="form-control" placeholder="Type your message..." required>
+                    <button type="submit" class="btn btn-primary ms-2">Send</button>
+                </form>
+                </div>
+            </div>
+
+
+        </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var mbox = document.getElementById("mbox");
+                mbox.scrollTop = mbox.scrollHeight;
+            });
+        </script>
+
+{% endblock %}

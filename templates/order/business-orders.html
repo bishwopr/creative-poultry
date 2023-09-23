@@ -1,0 +1,42 @@
+
+
+{% extends 'base.html' %}
+
+{% block titleblock %}
+  Orders | Creative Poultry
+{% endblock %}
+
+{% block bodyblock %}
+
+<div class="container">
+   <h4 class="text-center">Orders Associated with Your Products</h4>
+    
+  
+        <hr>
+        {% for i in orders%}
+        <div class="bg-light p-3 mb-2 d-flex justify-content-around">
+            <h5>Order No. {{i.id}} </h5>
+            <p>Total Price:  ${{i.total_price}}</p>
+            <p>{{i.created_at}}</p>
+            <p>{{i.status}}</p>
+            <a href="/order/{{i.id}}/details" class="btn btn-sm btn-primary"> See Details</a>
+    
+        </div>
+        {% empty %}
+        <div class="m-5 p-5 text-center">
+            <p class="mt-5 pt-5">No any orders yet.</p>
+            
+        </div>
+        {% endfor %}
+    
+    </div>
+    
+    
+    
+    
+    
+    
+  
+</div>
+
+{% endblock %}

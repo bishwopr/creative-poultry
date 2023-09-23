@@ -1,0 +1,14 @@
+[
+  {
+    "input": "What is your name?",
+    "output": "My name is Chatbot."
+  },
+  {
+    "input": "How can I contact customer support?",
+    "output": "You can reach our customer support team at support@example.com."
+  },
+  {
+    "input": "Tell me about your products.",
+    "output": "We offer a wide range of products including electronics, clothing, and accessories."
+  }
+]

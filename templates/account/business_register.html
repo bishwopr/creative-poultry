@@ -1,0 +1,40 @@
+{% extends '../base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{%block titleblock%}Register | Creative Poultry{%endblock%}
+{%block bodyblock%}
+
+<div class="container-fluid px-0 mx-0 homediv" >
+ <div class="container col-lg-9 ">
+   <div class="row">
+    <div class="col-lg-5 me-3 mt-5 pt-5 ">
+        <img src="{%static 'images/06.png'%}" class="img-fluid" alt="homepicture">
+    </div>
+    <div class="col mb-3 mt-5  px-5 py-3 shadow ">
+        <h2 class="text-center" >Business Registration | Creative Poultry</h2>
+     
+        <br>
+        <form method="post" enctype="multipart/form-data" >
+          
+          {% csrf_token %}
+        
+          {% bootstrap_form form layout='floating'  %}
+       
+        
+           
+            <div class="mt-5 mb-3 d-flex justify-content-center">
+              <button type="submit" class="px-5  btn btn-info">Register</button>
+            </div>
+      </form>
+          <div class="text-center">
+            <a href="{% url 'account:register' %} " class="mt-3">Register as a customer instead.</a>
+          </div>
+      
+    </div>
+
+   </div>
+ </div>
+</div> 
+
+
+{%endblock%}

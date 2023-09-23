@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="chat">
+        {% for query in queries %}
+            <p><strong>You:</strong> {{ query.text }}</p>
+        {% endfor %}
+        {% if response %}
+            <p><strong>Chatbot:</strong> {{ response }}</p>
+        {% endif %}
+    </div>
+    <form id="chat-form" method="post">
+        {% csrf_token %}
+        <input type="text" id="message-input" name="message">
+        <button type="submit">Send</button>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#chat-form').submit(function(event) {
+                event.preventDefault();
+                var message = $('#message-input').val().trim();
+                if (message) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "chatbot_view" %}',
+                        data: { message: message },
+                        success: function(response) {
+                            $('#chat').append('<p><strong>You:</strong> ' + message + '</p>');
+                            $('#chat').append('<p><strong>Chatbot:</strong> ' + response + '</p>');
+                            $('#message-input').val('');
+                            // Scroll to the bottom of the chat
+                            $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

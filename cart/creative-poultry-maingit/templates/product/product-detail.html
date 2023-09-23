@@ -1,0 +1,42 @@
+{% extends '../base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{%block titleblock%}{{product.name}} | Creative Poultry{%endblock%}
+{%block bodyblock%}
+
+<div class="container-fluid px-0 mt-2 mx-0 homediv " >
+ <div class="container col-lg-9 ">
+  <div class="p-4 border">
+    <h3 class="text-center">Product Detail</h3><hr>
+    <div class="row">
+        <div class="col p-2 mt-5">
+            <img class="img-fluid" src="{{product.image.url}}" alt="">
+        </div>
+        <div class="col">
+            <div class="text-center my-4">
+                <h3>{{product.name}}</h3>
+            <p>{{product.desc|safe}}</p>
+            <p>Price: ${{product.price}}</p>
+            <p>Discount: {{product.discount}}%</p>
+        <a href="" class="px-5  btn btn-info">Add to your Cart </a> 
+            </div>
+
+      <div class="border p-2 mx-5 mt-5 text-center">
+        <h5>Seller's Information</h5><hr class="m-0 p-0 mb-1">
+        <p>{{product.creator.email}}</p>
+        <p>Address:{{product.creator.address}} </p>
+        <p>Business info:{{product.creator.business_info}} </p>
+    
+      </div>
+
+        </div>
+    </div>
+
+    <!-- <div class="mt-5 mb-3 d-flex justify-content-between">
+        <a href="" class="px-5  btn btn-outline-danger">Delete Product</a>
+        <button type="submit" class="px-5  btn btn-yellow">Update Product</button>
+      </div> -->
+  </div>
+ </div>
+</div> 
+{%endblock%}

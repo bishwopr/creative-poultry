@@ -1,0 +1,126 @@
+<!-- cart/checkout.html -->
+
+{% extends 'base.html' %}
+
+{% block titleblock %}
+  Checkout | Creative Poultry
+{% endblock %}
+
+{% block bodyblock %}
+<div class="container p-5">
+    <h4 class="text-secondary mb-3">Order No. {{order.id}}</h4>
+    <hr>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="border p-3">
+                <table class="table ">
+                    <thead>
+                      <tr>
+                        <th scope="col">S.N.</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+            {% for i in orderitems %}
+
+                      <tr>
+                        <td scope="row">{{forloop.counter}}</td>
+                        <th>{{i.product.name}}</th>
+                        <td>{{i.quantity}} </td>
+                        <td>${{i.product.price}}</td>
+                      </tr>
+              {% endfor %}
+              <tr class="table-info">
+                <th colspan="2">SubTotal</th>
+                <th> {{order.get_quantity}} </th>
+                <th>$ {{order.total_price}}</th>
+              </tr>
+                    
+                    </tbody>
+                  </table>
+            </div>
+            <hr>
+            {% if request.user.is_business%}
+              {% if order.status == 'Submitted' %}
+              <h5 class="text-center">Generate Invoice</h5>
+              <form method="post">
+                {% csrf_token %}
+                <label for="shipcharge">Shipping Charge</label>
+                <input placeholder="$ Enter the Shipping Charge" type="text" class="form-control" name="shippingcharge" id="shipcharge">
+                <div class="d-flex justify-content-between mt-3">
+                  <a href="{% url 'order:deny-order' order.id %}" class="btn btn-danger btn-sm">Deny This Order</a>
+                  <button class="btn btn-primary btn-sm">Generate</button>
+
+                </div>
+              </form>
+             
+
+              
+              <hr>
+              {%endif%}
+              {%endif%}
+        </div>
+        <div class="col-md-5">
+            <div class="border p-3 text-center mb-4">
+                <h5 class="text-center">Order Summary</h5>
+                <hr>
+                <p>total products (distinct): {{orderitems|length}} </p>
+                <p>total quantity: {{order.get_quantity}} </p>
+                <p>payment: <span >{{order.payment_method}}</span></p>
+                <p class="">status:  <span class="text-primary">{{order.status}}</span></p>
+                {% if order.promo_code %}
+                <p>discount: <span >{{order.promo_code.discount_percentage}}% (promocode)</span></p>
+                {%endif%}
+               
+                  {% if order.status == 'Submitted' %}
+                  <p class="">shipping charge:  <span >
+                  Your order is under review.
+                </span></p>
+                <p class="fw-bold bg-info ">total price: $ {{order.gettotalprice}}</p>
+                {% elif order.status == 'Denied' %}
+                  <p >shipping charge:  <span class="text-danger">
+                  This order has been denied. May be there arise some issues. FYI you can message the merchant. 
+                </span></p>
+                  {%else%}
+                  <p class="">shipping charge:  <span >
+                  $ {{order.shippingcharge}}
+                </span></p>
+                <p class="fw-bold bg-info ">total price: $ {{order.alltotalprice}}</p>
+                
+                
+
+                {%endif%}
+                 
+                
+              
+
+            </div>
+            <div class="shadow p-3 text-center">
+              {% if request.user.is_business%}
+              <h5 class="text-center">User Information</h5>
+              <p>First Name : <span class="fw-bold">{{order.user.first_name}}</span></p>
+              <p>Last Name : <span class="fw-bold">{{order.user.last_name}}</span></p>
+              <p>Email : <span class="fw-bold">{{order.user.email}}</span></p>
+              
+              <hr>
+              {%endif%}
+                <h5 class="text-center">Shipping Details</h5>
+                <p>Adderess : <span class="fw-bold">{{order.address}}</span></p>
+                <p>Phone : <span class="fw-bold">{{order.phone}}</span></p>
+             
+         
+              
+                
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    
+    
+
+
+{% endblock %}

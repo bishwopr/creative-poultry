@@ -1,0 +1,102 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bot.css'%}" />
+
+<section title="Lil' Ducky">
+    <button type="button" class="chat-btn">
+      <img src="https://t4.ftcdn.net/jpg/05/93/07/51/360_F_593075172_Jldpayze5Ka4Nvc0axlKCS6Hkt1LlvYM.jpg" class="avatar-btn" alt="" />
+    </button>
+
+    <div class="chat-popup">
+      <!-- <div class="badge">1</div> -->
+      <div class="chat-area">
+        <div class="income-msg">
+          <img src="https://t4.ftcdn.net/jpg/05/93/07/51/360_F_593075172_Jldpayze5Ka4Nvc0axlKCS6Hkt1LlvYM.jpg" class="avatar" alt="" />
+          <span class="msg">Namaste, How can I help you?</span>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <input type="text" placeholder="ask here..." required />
+
+        <button class="submit"><i class="material-icons"> send</i></button>
+      </div>
+    </div>
+  </section>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <script>
+    const popup = document.querySelector(".chat-popup");
+    const chatBtn = document.querySelector(".chat-btn");
+    const submitBtn = document.querySelector(".submit");
+    const chatArea = document.querySelector(".chat-area");
+    const inputElm = document.querySelector("input");
+
+    window.addEventListener("DOMContentLoaded", () => {});
+
+    function autoScroll() {
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    chatBtn.addEventListener("click", () => {
+      popup.classList.toggle("cshow");
+    });
+
+    function botreply(userinput) {
+      $.ajax({
+        type: "POST",
+        url: "{% url 'chatbot:chatbot' %}",
+        data: {
+          msg: userinput,
+          csrfmiddlewaretoken: "{{csrf_token}}", // from form
+        },
+        dataType: "json",
+        success: function (res) {
+          $("#reply").html(res.response);
+
+          let temp = ` <div class="income-msg">
+          <img
+          src="https://t4.ftcdn.net/jpg/05/93/07/51/360_F_593075172_Jldpayze5Ka4Nvc0axlKCS6Hkt1LlvYM.jpg"
+            class="avatar"
+            alt=""
+          />
+          <span class="msg">${res.response}</span>
+        </div>`;
+
+          chatArea.insertAdjacentHTML("beforeend", temp);
+          autoScroll();
+        },
+      });
+      return false; //<---- move it here
+    }
+
+    function mainAction() {
+      let userInput = inputElm.value;
+
+      if (userInput == "") {
+        return;
+      } else {
+        let temp = `<div class="out-msg">
+  <span class="my-msg">${userInput}</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcVrZZMAivaotvLvSR0jD4CZ2hH9UoUrAYqXigjHW55qPwTTO1qYocD6yZCxq9ThqRHT0&usqp=CAU" class="avatar">
+  </div>`;
+
+        chatArea.insertAdjacentHTML("beforeend", temp);
+        setTimeout(function () {
+          botreply(userInput);
+        }, 1000);
+        autoScroll();
+        inputElm.value = "";
+      }
+    }
+
+    // send msg
+    submitBtn.addEventListener("click", () => {
+      mainAction();
+    });
+
+    $("input").keypress(function (e) {
+      if (e.which == 13) {
+        mainAction();
+      }
+    });
+  </script>

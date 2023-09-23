@@ -1,0 +1,63 @@
+{% extends '../base.html' %}
+{% load static %}
+{%block titleblock%}Profile | Creative Business{%endblock%}
+{%block bodyblock%}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div class="container-fluid px-0 mt-2 mx-0 homediv ">
+  <div class="container col-lg-10 ">
+    <div id="salesChart" style="width: 100%; height: 400px;"></div>
+
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            // Get data from the Django view (context)
+            var labels = {{ labels|safe }};
+            var salesData = {{ sales_data|safe }};
+
+            // Combine labels and sales data into a single data array
+            var data = [['Date', 'Total Sales']].concat(labels.map(function(label, index) {
+                return [label, salesData[index]];
+            }));
+
+            var chartData = google.visualization.arrayToDataTable(data);
+
+            var options = {
+                title: 'Sales Chart',
+                curveType: 'function',
+                legend: {
+                    position: 'bottom',
+                    alignment: 'start' // Align the legend text to the start (left) of the legend area
+                },
+                vAxis: {
+                    title: 'Total Sales', // Add a title to the vertical (y-axis) legend
+                    titleTextStyle: {
+                        italic: false // Ensure the title is not italicized
+                    }
+                },
+                hAxis: {
+                    title: 'Date', // Add a title to the horizontal (x-axis) section
+                    titleTextStyle: {
+                        italic: false // Ensure the title is not italicized
+                    }
+                }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('salesChart'));
+
+            chart.draw(chartData, options);
+        }
+    </script>
+  </div>
+</div>
+
+
+
+
+
+
+{%endblock%}
+
+

@@ -1,0 +1,8 @@
+{"name": "Whole chicken", "price": "12", "desc": "A fresh whole chicken, typically weighing around 4-5 pounds. This versatile option is great for roasting, grilling, or braising."}
+{"name": "Whole turkey", "price": "20", "desc": "A whole turkey, available in various sizes (e.g., 12-14 pounds, 16-18 pounds, etc.). Perfect for holiday gatherings or special occasions."}
+{"name": "chicken breasts (kilo)", "price": "9", "desc": "Boneless, skinless chicken breasts, packed with lean protein. These versatile cuts can be used in stir-fries, salads, or as the main protein in various dishes."}
+{"name": "ground chicken (kilo)", "price": "11", "desc": "Lean ground chicken, ideal for making meatballs, burgers, or adding to pasta sauces. A healthier alternative to ground beef."}
+{"name": "Cooked Turkey Sausages: per 12-ounce package", "price": "12", "desc": "Fully cooked turkey sausages with different flavors (e.g., Italian, smoked, or spicy). These sausages are great for breakfast, grilling, or adding to pasta dishes."}
+{"name": "Chicken wings", "price": "15", "desc": "Chicken wings, ideal for appetizers, game day snacks, or as a main course. They can be prepared with various sauces and seasonings."}
+{"name": "free range eggs", "price": "99", "desc": "by inghams"}
+{"name": "big and crispy", "price": "333", "desc": "very good for bbq"}

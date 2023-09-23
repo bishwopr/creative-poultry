@@ -1,0 +1,20 @@
+<!-- cart/invoice_detail.html -->
+
+{% extends 'base.html' %}
+
+{% block titleblock %}
+  Invoice Details | Creative Poultry
+{% endblock %}
+
+{% block bodyblock %}
+<div class="container">
+  <h2>Invoice Details</h2>
+  <p>Invoice Number: {{ invoice.invoice_number }}</p>
+  <p>Date Created: {{ invoice.date_created }}</p>
+  <p>Total Amount: ${{ invoice.total_amount|floatformat:2 }}</p>
+  <p>Delivery Charge: ${{ invoice.delivery_charge }}</p>
+  <p>Promo Code: {{ invoice.promo_code }}</p>
+  <p>Payment Method: {{ invoice.payment_method }}</p>
+  <!-- Add more invoice details here if needed -->
+</div>
+{% endblock %}

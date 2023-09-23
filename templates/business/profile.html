@@ -1,0 +1,81 @@
+
+  {% extends '../base.html' %}
+  {% load static %}
+  {%block titleblock%}Profile | Creative Business{%endblock%}
+  {%block bodyblock%}
+
+  <div class="container-fluid px-0 mt-2 mx-0 homediv ">
+    <div class="container col-lg-10 ">
+      <div class="row">
+        <div class="col">
+          <div class="shadow-sm">
+            <div class=" py-2">
+              <p class=" fs-2 text-center ">Business Information</p>
+            </div>
+            {%if info.name == 'Creative Poultry Business'%}
+            <div class="bg-light p-3 text-center">
+              <p>Please update your business information first.</p>
+              <a class="btn btn-outline-info" href="{% url 'business:info-update'%}" >Update Information</a>
+            </div>
+            {%else%}
+            <div>
+              <div class="p-2 text-center my-2 ">
+                <img src="{{info.profile_image.url}}" class="rounded-circle border " width="140" height="140"
+                  alt="profile image">
+              </div>
+              <div class="text-center mt-2">
+                <h4>{{info.name}}</h4>
+
+                <h5>{{info.address}}</h5>
+                <h5>{{info.contact}}</h5>
+                <p class="px-5">{{info.description}}</p>
+
+                <hr class="px-4">
+                <div class="d-flex justify-content-center pb-2 ">
+                  <a class="btn btn-info" href="{% url 'business:info-update'%}" >Update Information</a>
+
+
+                </div>
+
+
+              </div>
+            </div>
+            {%endif%}
+            
+          </div>
+        </div>
+        <div class="col">
+          <div class="p2">
+            <p class=" fs-3 text-center ">Recent Added Products ({{products|length}})</p>
+            <hr>
+            <div class="p-3">
+              {%for i in products %}
+              <div class="d-flex justify-content-around ">
+                <p>{{forloop.counter}}.</p>
+                <a href="{% url 'product:updateproduct' pk=i.id %}" class="text-decoration-none">
+                  <p class="text-bold">{{i.name}}</p>
+                </a>
+
+                <p>{{i.category.category}}</p>
+                <p>$ {{i.price}}</p>
+                <p>{{i.discount}}% off</p>
+
+              </div>
+              {%empty%}
+              <div class="text-center p-5 m-5">
+                <p class="">No added products.</p>
+                <a href="{%url 'product:addproduct' %}" class="btn btn-primary btn-small mt-2">
+                  Add Product
+                </a>
+              </div>
+              {%endfor%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  {%endblock%}

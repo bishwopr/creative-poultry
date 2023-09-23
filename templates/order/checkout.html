@@ -1,0 +1,108 @@
+<!-- cart/checkout.html -->
+
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block titleblock %}
+  Checkout | Creative Poultry
+{% endblock %}
+
+{% block bodyblock %}
+
+
+
+<div class="container p-5">
+  <h4 class="text-secondary mb-3">Ordered Products</h4>
+  <br>
+  <div class="row">
+      <div class="col-md-7">
+          <div class="border p-3">
+              <table class="table ">
+                  <thead>
+                    <tr>
+                      <th scope="col">S.N.</th>
+                      <th scope="col">Product</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+          {% for i in cartitems %}
+
+                    <tr>
+                      <td scope="row">{{forloop.counter}}</td>
+                      <th>{{i.product.name}}</th>
+                      <td>{{i.quantity}} </td>
+                      <td>${{i.product.price}}</td>
+                    </tr>
+            {% endfor %}
+            <tr class="table-info">
+              
+              <th colspan="2">Total</th>
+              <th> {{cart.get_total_quantity}} </th>
+              <th>$ {{cart.get_total}}</th>
+            </tr>
+                  
+                  </tbody>
+                </table>
+          </div>
+      </div>
+      <div class="col-md-5">
+          <div class="border p-3 text-center mb-4">
+              <h5 class="text-center">Order Summary</h5>
+              <hr>
+              <p>total products (distinct): {{cartitems|length}} </p>
+              <p>total quantity: {{cart.get_total_quantity}} </p>
+              <p class="fw-bold">total price: $ {{cart.get_total}}</p>
+
+              {%if promo_code_discount%}
+              <p class="fw-bold text-success">promo code discount: {{promo_code_discount}}%</p>
+              {% endif%}
+
+            
+          </div>
+          <div class="border p-3 mb-4 text-center">
+            <h5 class="text-center" style="background-color: aquamarine;" >Promocode *if any</h5>
+            <hr>
+          <form  method="post" action="{% url 'order:validate-promo'%}">
+            <table class="table text-center">
+                {%csrf_token%}
+                {% bootstrap_form form1 layout='inline' form_group_class='w3-input w3-border-0 w3-large'  %}
+
+
+            </table>
+            {% if promo_code_discount %}
+            <button title="Code already applied" type="submit" class="btn btn-light" disabled >Code already applied</button>
+            {%else%}
+            <button type="submit" class="btn btn-light">Validate Code</button>
+            {%endif%}
+          </form>
+     
+          
+            
+        </div>
+        
+          <div class="shadow p-3 text-center mb-4">
+              <h5 class="text-center">Shipping Details</h5>
+              <hr>
+            <form  method="post">
+              <table class="table text-center">
+                  {%csrf_token%}
+                  {% bootstrap_form form layout='floating'  %}
+
+
+              </table>
+              <button type="submit" class="btn btn-info my-2">Confirm Order ✔</button>
+            </form>
+       
+            
+              
+          </div>
+         
+      </div>
+  </div>
+
+  </div>
+
+
+{% endblock %}

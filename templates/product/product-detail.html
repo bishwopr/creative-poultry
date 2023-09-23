@@ -1,0 +1,104 @@
+{% extends '../base.html' %}
+{% load static %}
+{% load checkratings %}
+{% load django_bootstrap5 %}
+{%block titleblock%}{{product.name}} | Creative Poultry{%endblock%}
+{%block bodyblock%}
+<style>
+    .rating{
+       color: #ffd900;
+       /* font-size: 30px; */
+    }
+    .erating{
+       color: #a3a192;
+       /* font-size: 30px; */
+    }
+ 
+ </style>
+
+<div class="container-fluid px-0 mt-2 mx-0 homediv " >
+ <div class="container col-lg-9 ">
+  <div class="p-4 border">
+    <h3 class="text-center">Product Detail</h3><hr>
+    <div class="row">
+        <div class="col p-2 mt-5">
+            <img class="img-fluid" src="{{product.image.url}}" alt="image">
+            <div class="shadow-sm my-3 p-2">
+                {% if product.id|check_rating:request.user  %}
+                    {% if not product.id|check_review:request.user  %}
+                    <h6 class="text-center my-3">Rate & Review this Product</h6>
+                    <form action="{% url 'product:rate-product'%}" method="post">
+                        {%csrf_token%}
+                    <div class="mb-2">
+                        <label for="customRange2" class="form-label">Stars</label>
+                        <div class="d-flex justify-content-between">
+                            <input type="range" name="rate" class="form-range" min="1" max="5" id="customRange2" oninput="num.value = this.value + `⭐`">
+                        <output class="ms-4" id="num">3⭐</output>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Write a review</label>
+                        <textarea class="form-control" placeholder="write about the product..." name="review" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                    <input type="text" name="pid" value="{{product.id}}" hidden>
+                    <div class="d-flex justify-content-end">
+                        <input type="submit" class="btn btn-primary btn-sm" value="Post" >
+                    </div>
+                    </form>
+                    {% else %}
+                    <h6 class="text-center my-2">Product Ratings: {{product.average_rating}} / 5 </h6>
+                    <span class="d-flex justify-content-center" title="{{product.average_rating}} / 5">
+                        <span style="font-size: 30px;">{{ product.average_rating|render_stars|safe }}</span>
+
+                       
+                     </span>
+                    {% endif %}
+                 
+                
+                {% else %}
+                <h6 class="text-center my-2">Product Ratings: {{product.average_rating}} / 5 </h6>
+                <span class="d-flex justify-content-center" title="{{product.average_rating}} / 5">
+                    <span style="font-size: 30px;">{{ product.average_rating|render_stars|safe }}</span>
+                   
+                 </span>
+                    <p class="mt-2 text-center"><small>You need to purchase this product to rate it.</small></p>
+                {% endif %}
+            </div>
+            <div class="border p-2">
+                <h5 class="mb-2">All reviews ({{product.user_reviews|length}})</h5>
+                {% for i in product.user_reviews %}
+                <div class="mb-2 shadow-sm p-2">
+                    <span> <strong>{{i.user.email}}</strong> &nbsp; <span style="font-size: 10px;">{{ i.rating|render_stars|safe }}</span> </span> <br>
+                    <small>{{i.review}}</small>
+                </div>
+                {%empty%}
+                <p class="p-3 text-center">No reviews yet.</p>
+                {%endfor%}
+            </div>
+        </div>
+        <div class="col">
+            <div class="text-center my-4">
+                <h3>{{product.name}}</h3>
+            <p>{{product.desc|safe}}</p>
+            <p>Price: <strike class="text-secondary">${{product.mprice}}</strike> &nbsp; ${{product.price}}</p>
+        <a href="{% url 'cart:add' pk=product.id %}" class="px-5  btn btn-yellow">Add to Cart &nbsp; <i class="fa-solid fa-bag-shopping" title="cart"></i></a> 
+            </div>
+      <div class="border p-2 mx-5 mt-5 text-center">
+        <h5>Seller's Information</h5><hr class="m-0 p-0 mb-1">
+        <p>{{product.businessuser.name}}</p>
+        <p>Address: {{product.businessuser.address}}</p>
+        <p>Contact: {{product.businessuser.contact}}</p>
+    <a href="{% url 'messaging:check_message_room' product.id %}" class="px-5  btn btn-info">Message</a> 
+      </div>
+
+        </div>
+    </div>
+
+    <!-- <div class="mt-5 mb-3 d-flex justify-content-between">
+        <a href="" class="px-5  btn btn-outline-danger">Delete Product</a>
+        <button type="submit" class="px-5  btn btn-yellow">Update Product</button>
+      </div> -->
+  </div>
+ </div>
+</div> 
+{%endblock%}
